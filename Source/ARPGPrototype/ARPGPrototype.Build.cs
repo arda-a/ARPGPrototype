@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class FirstProject : ModuleRules
+public class ARPGPrototype : ModuleRules
 {
-	public FirstProject(ReadOnlyTargetRules Target) : base(Target)
+	public ARPGPrototype(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
