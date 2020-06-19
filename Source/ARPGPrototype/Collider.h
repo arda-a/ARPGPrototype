@@ -58,4 +58,8 @@ public:
 private:
     void MoveForward(float value);
     void MoveRight(float value);
+    void CameraPitch(float axisValue);
+    void CameraYaw(float axisValue);
+
+    FVector2D m_cameraInput;
 };
