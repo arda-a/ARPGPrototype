@@ -47,7 +47,7 @@ ACollider::ACollider()
 
     m_cameraInput = FVector2D(0.f, 0.f);
 
-    AutoPossessPlayer = EAutoReceiveInput::Player0;
+    AutoPossessPlayer = EAutoReceiveInput::Disabled;
 }
 
 // Called when the game starts or when spawned
