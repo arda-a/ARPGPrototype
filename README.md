@@ -1,4 +1,4 @@
 # ARPGPrototype
  An action RPG prototype made for learning purposes.
  
- Used SunTemple as default map.
+ Using InfinityBlade assets from Unreal marketplace and character models from Mixamo.com.
