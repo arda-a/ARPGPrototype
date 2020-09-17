@@ -1,0 +1,720 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "ARPGPrototype Mac Debug Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"Debug",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac Debug Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"Debug",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototype Mac Debug Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac Debug Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"Debug",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac DebugGame Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"DebugGame",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac DebugGame Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"DebugGame",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototype Mac DebugGame Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac DebugGame Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"DebugGame",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac Development Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"Development",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac Development Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"Development",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototype Mac Development Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac Development Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"Development",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac Shipping Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"Shipping",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac Shipping Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"Shipping",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototype Mac Shipping Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac Shipping Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"Shipping",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac Test Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"Test",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac Test Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"Test",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototype Mac Test Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype Mac Test Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"Mac",
+				"Test",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS Debug Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"Debug",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS Debug Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"Debug",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototype IOS Debug Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS Debug Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"Debug",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS DebugGame Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"DebugGame",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS DebugGame Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"DebugGame",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototype IOS DebugGame Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS DebugGame Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"DebugGame",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS Development Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"Development",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS Development Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"Development",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototype IOS Development Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS Development Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"Development",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS Shipping Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"Shipping",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS Shipping Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"Shipping",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototype IOS Shipping Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS Shipping Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"Shipping",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS Test Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"Test",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS Test Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"Test",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototype IOS Test Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototype IOS Test Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototype",
+				"IOS",
+				"Test",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototypeEditor Mac Debug Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototypeEditor",
+				"Mac",
+				"Debug",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototypeEditor Mac Debug Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototypeEditor",
+				"Mac",
+				"Debug",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototypeEditor Mac Debug Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototypeEditor Mac Debug Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototypeEditor",
+				"Mac",
+				"Debug",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototypeEditor Mac DebugGame Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototypeEditor",
+				"Mac",
+				"DebugGame",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototypeEditor Mac DebugGame Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototypeEditor",
+				"Mac",
+				"DebugGame",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototypeEditor Mac DebugGame Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototypeEditor Mac DebugGame Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototypeEditor",
+				"Mac",
+				"DebugGame",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototypeEditor Mac Development Build",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototypeEditor",
+				"Mac",
+				"Development",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototypeEditor Mac Development Rebuild",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototypeEditor",
+				"Mac",
+				"Development",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex"
+			],
+			"problemMatcher": "$msCompile",
+			"dependsOn": [
+				"ARPGPrototypeEditor Mac Development Clean"
+			],
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		},
+		{
+			"label": "ARPGPrototypeEditor Mac Development Clean",
+			"group": "build",
+			"command": "Engine/Build/BatchFiles/Mac/Build.sh",
+			"args": [
+				"ARPGPrototypeEditor",
+				"Mac",
+				"Development",
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject",
+				"-waitmutex",
+				"-clean"
+			],
+			"problemMatcher": "$msCompile",
+			"type": "shell",
+			"options": {
+				"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+			}
+		}
+	]
+}

@@ -1,0 +1,12 @@
+{
+	"files.exclude": {
+		"/Users/arda/Documents/GitHub/ARPGPrototype/Saved": true,
+		"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.xcworkspace": true,
+		"/Users/arda/Documents/GitHub/ARPGPrototype/Content": true,
+		"/Users/arda/Documents/GitHub/ARPGPrototype/DerivedDataCache": true,
+		"/Users/arda/Documents/GitHub/ARPGPrototype/.git": true,
+		"/Users/arda/Documents/GitHub/ARPGPrototype/.vscode": true,
+		"/Users/arda/Documents/GitHub/ARPGPrototype/Intermediate": true,
+		"/Users/arda/Documents/GitHub/ARPGPrototype/DerivedData": true
+	}
+}

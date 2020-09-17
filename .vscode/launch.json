@@ -1,0 +1,104 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "ARPGPrototype (Debug)",
+			"request": "launch",
+			"preLaunchTask": "ARPGPrototype Mac Debug Build",
+			"program": "/Users/arda/Documents/GitHub/ARPGPrototype/Binaries/Mac/UE4-Mac-Debug.app/Contents/MacOS/UE4-Mac-Debug",
+			"args": [
+			],
+			"cwd": "/Users/arda/UnrealEngine/UE_4.25",
+			"type": "lldb"
+		},
+		{
+			"name": "ARPGPrototype (DebugGame)",
+			"request": "launch",
+			"preLaunchTask": "ARPGPrototype Mac DebugGame Build",
+			"program": "/Users/arda/Documents/GitHub/ARPGPrototype/Binaries/Mac/UE4-Mac-DebugGame.app/Contents/MacOS/UE4-Mac-DebugGame",
+			"args": [
+			],
+			"cwd": "/Users/arda/UnrealEngine/UE_4.25",
+			"type": "lldb"
+		},
+		{
+			"name": "ARPGPrototype (Development)",
+			"request": "launch",
+			"preLaunchTask": "ARPGPrototype Mac Development Build",
+			"program": "/Users/arda/Documents/GitHub/ARPGPrototype/Binaries/Mac/UE4.app/Contents/MacOS/UE4",
+			"args": [
+			],
+			"cwd": "/Users/arda/UnrealEngine/UE_4.25",
+			"type": "lldb"
+		},
+		{
+			"name": "ARPGPrototype (Shipping)",
+			"request": "launch",
+			"preLaunchTask": "ARPGPrototype Mac Shipping Build",
+			"program": "/Users/arda/Documents/GitHub/ARPGPrototype/Binaries/Mac/UE4-Mac-Shipping.app/Contents/MacOS/UE4-Mac-Shipping",
+			"args": [
+			],
+			"cwd": "/Users/arda/UnrealEngine/UE_4.25",
+			"type": "lldb"
+		},
+		{
+			"name": "ARPGPrototype (Test)",
+			"request": "launch",
+			"preLaunchTask": "ARPGPrototype Mac Test Build",
+			"program": "/Users/arda/Documents/GitHub/ARPGPrototype/Binaries/Mac/UE4-Mac-Test.app/Contents/MacOS/UE4-Mac-Test",
+			"args": [
+			],
+			"cwd": "/Users/arda/UnrealEngine/UE_4.25",
+			"type": "lldb"
+		},
+		{
+			"name": "ARPGPrototypeEditor (Debug)",
+			"request": "launch",
+			"preLaunchTask": "ARPGPrototypeEditor Mac Debug Build",
+			"program": "/Users/arda/UnrealEngine/UE_4.25/Engine/Binaries/Mac/UE4Editor-Mac-Debug.app/Contents/MacOS/UE4Editor-Mac-Debug",
+			"args": [
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject"
+			],
+			"cwd": "/Users/arda/UnrealEngine/UE_4.25",
+			"type": "lldb"
+		},
+		{
+			"name": "ARPGPrototypeEditor (DebugGame)",
+			"request": "launch",
+			"preLaunchTask": "ARPGPrototypeEditor Mac DebugGame Build",
+			"program": "/Users/arda/UnrealEngine/UE_4.25/Engine/Binaries/Mac/UE4Editor-Mac-DebugGame.app/Contents/MacOS/UE4Editor-Mac-DebugGame",
+			"args": [
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject"
+			],
+			"cwd": "/Users/arda/UnrealEngine/UE_4.25",
+			"type": "lldb"
+		},
+		{
+			"name": "ARPGPrototypeEditor (Development)",
+			"request": "launch",
+			"preLaunchTask": "ARPGPrototypeEditor Mac Development Build",
+			"program": "/Users/arda/UnrealEngine/UE_4.25/Engine/Binaries/Mac/UE4Editor.app/Contents/MacOS/UE4Editor",
+			"args": [
+				"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject"
+			],
+			"cwd": "/Users/arda/UnrealEngine/UE_4.25",
+			"type": "lldb"
+		},
+		{
+			"name": "Generate Project Files",
+			"type": "mono",
+			"request": "launch",
+			"program": "/Users/arda/UnrealEngine/UE_4.25/Engine/Binaries/DotNET/UnrealBuildTool.exe",
+			"console": "internalConsole",
+			"args": [
+				"-projectfiles",
+				"-vscode",
+				"-project=\"/Users/arda/Documents/GitHub/ARPGPrototype/ARPGPrototype.uproject\"",
+				"-game",
+				"-engine"
+			],
+			"internalConsoleOptions": "openOnSessionStart",
+			"cwd": "/Users/arda/UnrealEngine/UE_4.25"
+		}
+	]
+}
