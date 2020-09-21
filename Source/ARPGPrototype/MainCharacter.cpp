@@ -40,6 +40,12 @@ AMainCharacter::AMainCharacter()
     GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f); //Character moves at this rotation rate
     GetCharacterMovement()->JumpZVelocity = 650.f;
     GetCharacterMovement()->AirControl = 0.2f;
+
+    MaxHealth = 100.f;
+    Health = 65.f;
+    MaxStamina = 350.f;
+    Stamina = 120.f;
+    Coins = 0;
 }
 
 // Called when the game starts or when spawned
@@ -103,5 +109,3 @@ void AMainCharacter::TurnAtRate(float rate) {
 void AMainCharacter::LookUpAtRate(float rate) {
     AddControllerPitchInput(rate * BaseLookUpAtRate * GetWorld()->GetDeltaSeconds());
 }
-
-
