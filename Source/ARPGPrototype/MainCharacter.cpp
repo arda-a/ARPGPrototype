@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -244,4 +245,13 @@ void AMainCharacter::IncrementCoins(int32 amount)
 void AMainCharacter::Die()
 {
     //TODO
+}
+
+void AMainCharacter::ShowPickupLocations()
+{
+    for (int32 i = 0; i < PickupLocations.Num(); i++)
+    {
+        UKismetSystemLibrary::DrawDebugSphere(this, PickupLocations[i], 25.f, 8, FLinearColor::Blue, 10.f, 0.75f);
+    }
+
 }
