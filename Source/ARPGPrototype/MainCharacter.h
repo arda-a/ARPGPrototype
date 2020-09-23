@@ -6,6 +6,26 @@
 #include "GameFramework/Character.h"
 #include "MainCharacter.generated.h"
 
+UENUM(BlueprintType)
+enum class EMovementStatus : uint8
+{
+    EMS_Normal UMETA(DisplayName = "Normal"),
+    EMS_Sprinting UMETA(DisplayName = "Sprinting"),
+
+    EMS_MAX UMETA(DisplayName = "DefaultMAX")
+};
+
+UENUM(BlueprintType)
+enum class EStaminaStatus : uint8
+{
+    ESS_Normal UMETA(DisplayName = "Normal"),
+    ESS_BelowMinimum UMETA(DisplayName = "BelowMinimum"),
+    ESS_Exhausted UMETA(DisplayName = "Exhausted"),
+    ESS_ExhaustedRecovering UMETA(DisplayName = "ExhaustedRecovering"),
+
+    ESS_MAX UMETA(DisplayName = "DefaultMAX")
+};
+
 UCLASS()
 class ARPGPROTOTYPE_API AMainCharacter : public ACharacter
 {
@@ -14,6 +34,37 @@ class ARPGPROTOTYPE_API AMainCharacter : public ACharacter
 public:
     // Sets default values for this character's properties
     AMainCharacter();
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Enums")
+    EMovementStatus MovementStatus;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Enums")
+    EStaminaStatus StaminaStatus;
+
+    FORCEINLINE void SetStaminaStatus(EStaminaStatus status) { StaminaStatus = status; };
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+    float StaminaDrainRate;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+    float MinSprintStamina;
+
+    // Set movement status and running speed
+    void SetMovementStatus(EMovementStatus status);
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
+    float RunningSpeed;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
+    float SprintingSpeed;
+
+    bool bShiftKeyDown;
+
+    // Pressed down to enable sprinting
+    void ShiftKeyDown();
+
+    // Released to stop sprinting
+    void ShiftKeyUp();
 
     /// <summary>
     /// Positioning the camera behind the player.
