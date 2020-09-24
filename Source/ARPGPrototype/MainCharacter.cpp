@@ -6,6 +6,7 @@
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Weapon.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -51,6 +52,7 @@ AMainCharacter::AMainCharacter()
     SprintingSpeed = 750.f;
 
     bShiftKeyDown = false;
+    bLMBDown = false;
 
     // Initialize enums
     MovementStatus = EMovementStatus::EMS_Normal;
@@ -159,6 +161,9 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
     PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AMainCharacter::ShiftKeyDown);
     PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AMainCharacter::ShiftKeyUp);
 
+    PlayerInputComponent->BindAction("LMB", IE_Pressed, this, &AMainCharacter::LMBDown);
+    PlayerInputComponent->BindAction("LMB", IE_Released, this, &AMainCharacter::LMBUp);
+
     PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
     PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
 
@@ -202,6 +207,22 @@ void AMainCharacter::TurnAtRate(float rate)
 void AMainCharacter::LookUpAtRate(float rate)
 {
     AddControllerPitchInput(rate * BaseLookUpAtRate * GetWorld()->GetDeltaSeconds());
+}
+
+void AMainCharacter::LMBDown() {
+    bLMBDown = true;
+
+    if (ActiveOverlappingItem) {
+        AWeapon* wep = Cast<AWeapon>(ActiveOverlappingItem);
+        if (wep) {
+            wep->Equip(this);
+            SetActiveOverlappingItem(nullptr);
+        }
+    }
+}
+
+void AMainCharacter::LMBUp() {
+    bLMBDown = false;
 }
 
 void AMainCharacter::SetMovementStatus(EMovementStatus status)
@@ -254,4 +275,12 @@ void AMainCharacter::ShowPickupLocations()
         UKismetSystemLibrary::DrawDebugSphere(this, PickupLocations[i], 25.f, 8, FLinearColor::Blue, 10.f, 0.75f);
     }
 
+}
+
+void AMainCharacter::SetEquippedWeapon(AWeapon* weaponToSet) {
+    if (EquippedWeapon) {
+        EquippedWeapon->Destroy();
+    }
+
+    EquippedWeapon = weaponToSet;
 }

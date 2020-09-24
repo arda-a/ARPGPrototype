@@ -20,6 +20,8 @@ void APickup::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* O
         {
             main->IncrementCoins(CoinCount);
             main->PickupLocations.Add(GetActorLocation());
+            
+            Destroy();
         }
     }
 }

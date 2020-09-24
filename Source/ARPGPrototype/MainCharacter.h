@@ -37,31 +37,34 @@ public:
 
     TArray<FVector> PickupLocations;
 
-    UFUNCTION(BlueprintCallable)
-    void ShowPickupLocations();
+    UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Items")
+        class AWeapon* EquippedWeapon;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Items")
+        class AItem* ActiveOverlappingItem;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enums")
+        EMovementStatus MovementStatus;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Enums")
-    EMovementStatus MovementStatus;
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Enums")
-    EStaminaStatus StaminaStatus;
+        EStaminaStatus StaminaStatus;
 
     FORCEINLINE void SetStaminaStatus(EStaminaStatus status) { StaminaStatus = status; };
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-    float StaminaDrainRate;
+        float StaminaDrainRate;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-    float MinSprintStamina;
+        float MinSprintStamina;
 
     // Set movement status and running speed
     void SetMovementStatus(EMovementStatus status);
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
-    float RunningSpeed;
+        float RunningSpeed;
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
-    float SprintingSpeed;
+        float SprintingSpeed;
 
     bool bShiftKeyDown;
 
@@ -84,29 +87,30 @@ public:
     /** To scale turning functions for the camera */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
         float BaseTurnRate;
+
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
         float BaseLookUpAtRate;
 
     /**
      *
      * Player stats
-     * 
+     *
      */
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Stats")
-    float MaxHealth;
+        float MaxHealth;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
-    float Health;
+        float Health;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Player Stats")
-    float MaxStamina;
+        float MaxStamina;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
-    float Stamina;
+        float Stamina;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
-    int Coins;
+        int Coins;
 
     void DecrementHealth(float amount);
 
@@ -141,6 +145,16 @@ public:
     */
     void LookUpAtRate(float rate);
 
+    bool bLMBDown;
+    void LMBDown();
+    void LMBUp();
+
     FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
     FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+    void SetEquippedWeapon(AWeapon* weaponToSet);
+    FORCEINLINE void SetActiveOverlappingItem(AItem * item) { ActiveOverlappingItem = item; }
+
+    UFUNCTION(BlueprintCallable)
+    void ShowPickupLocations();
 };
