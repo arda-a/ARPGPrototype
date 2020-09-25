@@ -7,6 +7,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Weapon.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Animation/AnimInstance.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -175,7 +177,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AMainCharacter::MoveForward(float value)
 {
-    if (Controller != nullptr && value != 0.f)
+    if (Controller != nullptr && value != 0.f && !bAttacking)
     {
         //Find out which way is forward
         const FRotator rotation = Controller->GetControlRotation();
@@ -218,6 +220,9 @@ void AMainCharacter::LMBDown() {
             wep->Equip(this);
             SetActiveOverlappingItem(nullptr);
         }
+    }
+    else if (EquippedWeapon) {
+        Attack();
     }
 }
 
@@ -283,4 +288,34 @@ void AMainCharacter::SetEquippedWeapon(AWeapon* weaponToSet) {
     }
 
     EquippedWeapon = weaponToSet;
+}
+
+void AMainCharacter::Attack() {
+    if (!bAttacking) {
+        bAttacking = true;
+
+        UAnimInstance* animInstance = GetMesh()->GetAnimInstance();
+        if (animInstance && CombatMontage) {
+            int32 section = FMath::RandRange(0, 1);
+            switch (section)
+            {
+            case 0:
+                animInstance->Montage_Play(CombatMontage, 1.75f);
+                animInstance->Montage_JumpToSection(FName("Attack_1"), CombatMontage);
+                break;
+            case 1:
+                animInstance->Montage_Play(CombatMontage, 1.75f);
+                animInstance->Montage_JumpToSection(FName("Attack_2"), CombatMontage);
+                break;
+            default: break;
+            }
+        }
+    }
+}
+
+void AMainCharacter::AttackEnd() {
+    bAttacking = false;
+    if (bLMBDown) {
+        Attack();
+    }
 }
