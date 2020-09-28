@@ -20,6 +20,8 @@ AEnemy::AEnemy()
 	CombatSphere = CreateDefaultSubobject<USphereComponent>(TEXT("CombatSphere"));
 	CombatSphere->SetupAttachment(GetRootComponent());
 	CombatSphere->InitSphereRadius(75.f);
+
+	bOverlappingCombatSphere = false;
 }
 
 // Called when the game starts or when spawned
@@ -59,15 +61,39 @@ void AEnemy::AgroSphereOnOverlapBegin(UPrimitiveComponent* OverlappedComponent, 
 }
 
 void AEnemy::AgroSphereOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
-
+	if (OtherActor) {
+		AMainCharacter* main = Cast<AMainCharacter>(OtherActor);
+		if (main) {
+			SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Idle);
+			if (AIController) {
+				AIController->StopMovement();
+			}
+		}
+	}
 }
 
 void AEnemy::CombatSphereOnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
-
+	if (OtherActor) {
+		AMainCharacter* main = Cast<AMainCharacter>(OtherActor);
+		if (main) {
+			CombatTarget = main;
+			bOverlappingCombatSphere = true;
+			SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Attacking);
+		}
+	}
 }
 
 void AEnemy::CombatSphereOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
-
+	if (OtherActor) {
+		AMainCharacter* main = Cast<AMainCharacter>(OtherActor);
+		if (main) {
+			bOverlappingCombatSphere = false;
+			if (EnemyMovementStatus != EEnemyMovementStatus::EMS_Attacking) {
+				MoveToTarget(main);
+				CombatTarget = nullptr;
+			}
+		}
+	}
 }
 
 void AEnemy::MoveToTarget(AMainCharacter* target) {
@@ -76,13 +102,13 @@ void AEnemy::MoveToTarget(AMainCharacter* target) {
 	if (AIController) {
 		FAIMoveRequest moveReq;
 		moveReq.SetGoalActor(target);
-		moveReq.SetAcceptanceRadius(25.f);
+		moveReq.SetAcceptanceRadius(10.f);
 
 		FNavPathSharedPtr navPath;
 
 		AIController->MoveTo(moveReq, &navPath);
 
-		/** Draw path points for debugging 
+		/** Draw navigation path points for debugging 
 		* 
 		TArray<FNavPathPoint> pathPoints = navPath->GetPathPoints();
 		for (auto p : pathPoints) {
