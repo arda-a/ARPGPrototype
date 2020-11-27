@@ -168,4 +168,7 @@ public:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Anims")
     class UAnimMontage* CombatMontage;
+
+    UFUNCTION(BlueprintCallable)
+    void PlaySwingSound();  
 };

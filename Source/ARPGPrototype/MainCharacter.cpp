@@ -6,9 +6,11 @@
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "Weapon.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimInstance.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -317,5 +319,11 @@ void AMainCharacter::AttackEnd() {
     bAttacking = false;
     if (bLMBDown) {
         Attack();
+    }
+}
+
+void AMainCharacter::PlaySwingSound() {
+    if (EquippedWeapon->SwingSound) {
+        UGameplayStatics::PlaySound2D(this, EquippedWeapon->SwingSound);
     }
 }

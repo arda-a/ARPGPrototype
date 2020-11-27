@@ -17,6 +17,9 @@ AWeapon::AWeapon()
     SkeletalMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMesh"));
     SkeletalMesh->SetupAttachment(GetRootComponent());
 
+    CombatCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("CombatCollision"));
+    CombatCollision->SetupAttachment(GetRootComponent());
+
     bWeaponParticles = false;
 
     WeaponState = EWeaponState::EWS_Pickup;
@@ -28,16 +31,13 @@ void AWeapon::BeginPlay()
 {
     Super::BeginPlay();
 
-    CombatCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("CombatCollision"));
-    CombatCollision->SetupAttachment(GetRootComponent());
+    CombatCollision->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnCombatOverlapBegin);
+    CombatCollision->OnComponentEndOverlap.AddDynamic(this, &AWeapon::OnCombatOverlapEnd);
 
     CombatCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
     CombatCollision->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
     CombatCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
     CombatCollision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
-
-    CombatCollision->OnComponentBeginOverlap.AddDynamic(this, &AWeapon::OnCombatOverlapBegin);
-    CombatCollision->OnComponentEndOverlap.AddDynamic(this, &AWeapon::OnCombatOverlapEnd);
 }
 
 void AWeapon::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -98,6 +98,10 @@ void AWeapon::OnCombatOverlapBegin(UPrimitiveComponent* OverlappedComponent, AAc
                     FVector socketLocation = wepSocket->GetSocketLocation(SkeletalMesh);
                     UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), enemy->HitParticles, socketLocation, FRotator(0.f), false);
                 }
+            }
+
+            if (enemy->HitSound) {
+                UGameplayStatics::PlaySound2D(this, enemy->HitSound);
             }
         }
     }
