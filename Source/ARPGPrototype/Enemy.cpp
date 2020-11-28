@@ -6,6 +6,11 @@
 #include "AIController.h"
 #include "MainCharacter.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/BoxComponent.h"
+#include "Engine/SkeletalMeshSocket.h"
+#include "Sound/SoundCue.h"
+#include "Animation/AnimInstance.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -21,7 +26,11 @@ AEnemy::AEnemy()
 	CombatSphere->SetupAttachment(GetRootComponent());
 	CombatSphere->InitSphereRadius(75.f);
 
+	CombatCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("CombatCollision"));
+	CombatCollision->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("EnemySocket"));
+
 	bOverlappingCombatSphere = false;
+	bAttacking = false;
 
 	Health = 25.f;
 	MaxHealth = 100.f;
@@ -33,12 +42,22 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
+	AIController = Cast<AAIController>(GetController());
+
 	AgroSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::AgroSphereOnOverlapBegin);
 	AgroSphere->OnComponentEndOverlap.AddDynamic(this, &AEnemy::AgroSphereOnOverlapEnd);
+
 	CombatSphere->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::CombatSphereOnOverlapBegin);
 	CombatSphere->OnComponentEndOverlap.AddDynamic(this, &AEnemy::CombatSphereOnOverlapEnd);
+
+	CombatCollision->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::OnCombatOverlapBegin);
+	CombatCollision->OnComponentEndOverlap.AddDynamic(this, &AEnemy::OnCombatOverlapEnd);
+
+	CombatCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CombatCollision->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	CombatCollision->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	CombatCollision->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 	
-	AIController = Cast<AAIController>(GetController());
 }
 
 // Called every frame
@@ -82,7 +101,7 @@ void AEnemy::CombatSphereOnOverlapBegin(UPrimitiveComponent* OverlappedComponent
 		if (main) {
 			CombatTarget = main;
 			bOverlappingCombatSphere = true;
-			SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Attacking);
+			Attack();
 		}
 	}
 }
@@ -106,7 +125,7 @@ void AEnemy::MoveToTarget(AMainCharacter* target) {
 	if (AIController) {
 		FAIMoveRequest moveReq;
 		moveReq.SetGoalActor(target);
-		moveReq.SetAcceptanceRadius(10.f);
+		moveReq.SetAcceptanceRadius(AcceptanceRadius);
 
 		FNavPathSharedPtr navPath;
 
@@ -123,5 +142,62 @@ void AEnemy::MoveToTarget(AMainCharacter* target) {
 	}
 }
 
+void AEnemy::OnCombatOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	if (OtherActor) {
+		AMainCharacter* main = Cast<AMainCharacter>(OtherActor);
+		if (main) {
+			if (main->HitParticles) {
+				const USkeletalMeshSocket* tipSocket = GetMesh()->GetSocketByName("TipSocket");
+				if (tipSocket) {
+					FVector socketLocation = tipSocket->GetSocketLocation(GetMesh());
+					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), main->HitParticles, socketLocation, FRotator(0.f), false);
+				}
+			}
 
+			if (main->HitSound) {
+				UGameplayStatics::PlaySound2D(this, main->HitSound);
+			}
+		}
+	}
+}
+
+void AEnemy::OnCombatOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
+}
+
+void AEnemy::ActivateCollision() {
+	CombatCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+}
+
+void AEnemy::DeactivateCollision() {
+	CombatCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void AEnemy::Attack() {
+	if (AIController) {
+		AIController->StopMovement();
+		SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Attacking);
+	}
+
+	if (!bAttacking) {
+		bAttacking = true;
+		UAnimInstance* animInstance = GetMesh()->GetAnimInstance();
+		if (animInstance && CombatMontage) {
+			animInstance->Montage_Play(CombatMontage, 1.35f);
+			animInstance->Montage_JumpToSection(FName("Attack"), CombatMontage);
+		}
+	}
+}
+
+void AEnemy::AttackEnd() {
+	bAttacking = false;
+	if (bOverlappingCombatSphere) {
+		Attack();
+	}
+}
+
+void AEnemy::PlaySwingSound() {
+	if (SwingSound) {
+		UGameplayStatics::PlaySound2D(this, SwingSound);
+	}
+}
 

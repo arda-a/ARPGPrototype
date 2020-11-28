@@ -35,6 +35,12 @@ public:
     // Sets default values for this character's properties
     AMainCharacter();
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+    class UParticleSystem* HitParticles;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+    class USoundCue* HitSound;
+
     TArray<FVector> PickupLocations;
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Items")
