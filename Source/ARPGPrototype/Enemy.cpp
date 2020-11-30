@@ -99,6 +99,7 @@ void AEnemy::CombatSphereOnOverlapBegin(UPrimitiveComponent* OverlappedComponent
 	if (OtherActor) {
 		AMainCharacter* main = Cast<AMainCharacter>(OtherActor);
 		if (main) {
+			main->SetCombatTarget(this);
 			CombatTarget = main;
 			bOverlappingCombatSphere = true;
 			Attack();
@@ -110,6 +111,7 @@ void AEnemy::CombatSphereOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, 
 	if (OtherActor) {
 		AMainCharacter* main = Cast<AMainCharacter>(OtherActor);
 		if (main) {
+			main->SetCombatTarget(nullptr);
 			bOverlappingCombatSphere = false;
 			if (EnemyMovementStatus != EEnemyMovementStatus::EMS_Attacking) {
 				MoveToTarget(main);

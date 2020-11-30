@@ -6,11 +6,13 @@
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "Weapon.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimInstance.h"
 #include "Sound/SoundCue.h"
+#include "Enemy.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -64,6 +66,9 @@ AMainCharacter::AMainCharacter()
 
     StaminaDrainRate = 25.f;
     MinSprintStamina = 50.f;
+
+    InterpSpeed = 15.f;
+    bInterpToEnemy = false;
 }
 
 // Called when the game starts or when spawned
@@ -151,6 +156,19 @@ void AMainCharacter::Tick(float DeltaTime)
         break;
     default:break;
     }
+
+    if (bInterpToEnemy && CombatTarget) {
+        FRotator lookAtYaw = GetLookAtRotationYaw(CombatTarget->GetActorLocation());
+        FRotator interpRotation = FMath::RInterpTo(GetActorRotation(), lookAtYaw, DeltaTime, InterpSpeed);
+
+        SetActorRotation(interpRotation);
+    }
+}
+
+FRotator AMainCharacter::GetLookAtRotationYaw(FVector target) {
+    FRotator lookAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), target);
+    FRotator lookAtRotationYaw(0.f, lookAtRotation.Yaw, 0.f);
+    return lookAtRotationYaw;
 }
 
 // Called to bind functionality to input
@@ -295,6 +313,7 @@ void AMainCharacter::SetEquippedWeapon(AWeapon* weaponToSet) {
 void AMainCharacter::Attack() {
     if (!bAttacking) {
         bAttacking = true;
+        SetInterpToEnemy(true);
 
         UAnimInstance* animInstance = GetMesh()->GetAnimInstance();
         if (animInstance && CombatMontage) {
@@ -317,6 +336,7 @@ void AMainCharacter::Attack() {
 
 void AMainCharacter::AttackEnd() {
     bAttacking = false;
+    SetInterpToEnemy(false);
     if (bLMBDown) {
         Attack();
     }
@@ -327,3 +347,8 @@ void AMainCharacter::PlaySwingSound() {
         UGameplayStatics::PlaySound2D(this, EquippedWeapon->SwingSound);
     }
 }
+
+void AMainCharacter::SetInterpToEnemy(bool interp) {
+    bInterpToEnemy = interp;
+}
+
