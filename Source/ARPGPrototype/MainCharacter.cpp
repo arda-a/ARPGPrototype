@@ -13,6 +13,7 @@
 #include "Animation/AnimInstance.h"
 #include "Sound/SoundCue.h"
 #include "Enemy.h"
+#include "MainPlayerController.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -69,12 +70,16 @@ AMainCharacter::AMainCharacter()
 
     InterpSpeed = 15.f;
     bInterpToEnemy = false;
+
+    bHasCombatTarget = false;
 }
 
 // Called when the game starts or when spawned
 void AMainCharacter::BeginPlay()
 {
     Super::BeginPlay();
+
+    MainPlayerController = Cast<AMainPlayerController>(GetController());
 }
 
 // Called every frame
@@ -162,6 +167,13 @@ void AMainCharacter::Tick(float DeltaTime)
         FRotator interpRotation = FMath::RInterpTo(GetActorRotation(), lookAtYaw, DeltaTime, InterpSpeed);
 
         SetActorRotation(interpRotation);
+    }
+
+    if (CombatTarget) {
+        CombatTargetLocation = CombatTarget->GetActorLocation();
+        if (MainPlayerController) {
+            MainPlayerController->EnemyLocation = CombatTargetLocation;
+        }
     }
 }
 
