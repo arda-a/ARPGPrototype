@@ -12,6 +12,7 @@
 #include "Sound/SoundCue.h"
 #include "Animation/AnimInstance.h"
 #include "TimerManager.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -39,6 +40,10 @@ AEnemy::AEnemy()
 
 	AttackMinTime = 0.5f;
 	AttackMaxTime = 3.5f;
+
+	EnemyMovementStatus = EEnemyMovementStatus::EMS_Idle;
+
+	DeathDelay = 3.f;
 }
 
 // Called when the game starts or when spawned
@@ -79,7 +84,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 }
 
 void AEnemy::AgroSphereOnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
-	if (OtherActor) {
+	if (OtherActor && Alive()) {
 		AMainCharacter* main = Cast<AMainCharacter>(OtherActor);
 		if (main) {
 			MoveToTarget(main);
@@ -100,7 +105,7 @@ void AEnemy::AgroSphereOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AA
 }
 
 void AEnemy::CombatSphereOnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
-	if (OtherActor) {
+	if (OtherActor && Alive()) {
 		AMainCharacter* main = Cast<AMainCharacter>(OtherActor);
 		if (main) {
 			main->SetCombatTarget(this);
@@ -115,7 +120,9 @@ void AEnemy::CombatSphereOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, 
 	if (OtherActor) {
 		AMainCharacter* main = Cast<AMainCharacter>(OtherActor);
 		if (main) {
-			main->SetCombatTarget(nullptr);
+			if (main->CombatTarget == this) {
+				main->SetCombatTarget(nullptr);
+			}
 			bOverlappingCombatSphere = false;
 			if (EnemyMovementStatus != EEnemyMovementStatus::EMS_Attacking) {
 				MoveToTarget(main);
@@ -164,6 +171,10 @@ void AEnemy::OnCombatOverlapBegin(UPrimitiveComponent* OverlappedComponent, AAct
 			if (main->HitSound) {
 				UGameplayStatics::PlaySound2D(this, main->HitSound);
 			}
+
+			if (DamageTypeClass) {
+				UGameplayStatics::ApplyDamage(main, Damage, AIController, this, DamageTypeClass);
+			}
 		}
 	}
 }
@@ -180,6 +191,9 @@ void AEnemy::DeactivateCollision() {
 }
 
 void AEnemy::Attack() {
+	if (!Alive())
+		return;
+
 	if (AIController) {
 		AIController->StopMovement();
 		SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Attacking);
@@ -207,5 +221,45 @@ void AEnemy::PlaySwingSound() {
 	if (SwingSound) {
 		UGameplayStatics::PlaySound2D(this, SwingSound);
 	}
+}
+
+float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) {
+	if (Health - DamageAmount < 0.f) {
+		Health -= DamageAmount;
+		Die();
+	}
+	else
+		Health -= DamageAmount;
+
+	return DamageAmount;
+}
+
+void AEnemy::Die() {
+	UAnimInstance* animInstance = GetMesh()->GetAnimInstance();
+	if (animInstance && CombatMontage) {
+		animInstance->Montage_Play(CombatMontage, 1.35f);
+		animInstance->Montage_JumpToSection(FName("Death"), CombatMontage);
+	}
+	SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Dead);
+
+	CombatCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	AgroSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CombatSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+void AEnemy::DeathEnd() {
+	GetMesh()->bPauseAnims = true;
+	GetMesh()->bNoSkeletonUpdate = true;
+
+	GetWorldTimerManager().SetTimer(DeathTimer, this, &AEnemy::Disappear, DeathDelay);
+}
+
+bool AEnemy::Alive() {
+	return EnemyMovementStatus != EEnemyMovementStatus::EMS_Dead;
+}
+
+void AEnemy::Disappear() {
+	Destroy();
 }
 

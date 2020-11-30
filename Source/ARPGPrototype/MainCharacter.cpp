@@ -283,6 +283,12 @@ void AMainCharacter::DecrementHealth(float amount)
     }
 }
 
+float AMainCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+    DecrementHealth(DamageAmount);
+    return DamageAmount;
+}
+
 void AMainCharacter::IncrementCoins(int32 amount)
 {
     Coins += amount;
@@ -290,7 +296,11 @@ void AMainCharacter::IncrementCoins(int32 amount)
 
 void AMainCharacter::Die()
 {
-    //TODO
+    UAnimInstance* animInstance = GetMesh()->GetAnimInstance();
+    if (animInstance && CombatMontage) {
+        animInstance->Montage_Play(CombatMontage, 1.f);
+        animInstance->Montage_JumpToSection(FName("Death"), CombatMontage);
+    }
 }
 
 void AMainCharacter::ShowPickupLocations()
