@@ -72,6 +72,9 @@ AMainCharacter::AMainCharacter()
     bInterpToEnemy = false;
 
     bHasCombatTarget = false;
+
+    bMovingForward = false;
+    bMovingRight = false;
 }
 
 // Called when the game starts or when spawned
@@ -94,7 +97,7 @@ void AMainCharacter::Tick(float DeltaTime)
 
     switch (StaminaStatus) {
     case EStaminaStatus::ESS_Normal:
-        if (bShiftKeyDown) {
+        if (bShiftKeyDown && (bMovingForward || bMovingRight)) {
             if (Stamina - deltaStamina <= MinSprintStamina) {
                 SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
                 Stamina -= deltaStamina;
@@ -117,7 +120,7 @@ void AMainCharacter::Tick(float DeltaTime)
         }
         break;
     case EStaminaStatus::ESS_BelowMinimum:
-        if (bShiftKeyDown) {
+        if (bShiftKeyDown && (bMovingForward || bMovingRight)) {
             if (Stamina - deltaStamina <= 0.f) {
                 Stamina = 0.f;
                 SetStaminaStatus(EStaminaStatus::ESS_Exhausted);
@@ -141,14 +144,9 @@ void AMainCharacter::Tick(float DeltaTime)
         }
         break;
     case EStaminaStatus::ESS_Exhausted:
-        if (bShiftKeyDown) {
-            Stamina = 0.f;
-        }
-        else { // shift key up
-            SetStaminaStatus(EStaminaStatus::ESS_ExhaustedRecovering);
-            Stamina += deltaStamina;
-        }
-
+        SetStaminaStatus(EStaminaStatus::ESS_ExhaustedRecovering);
+        Stamina += deltaStamina;
+        
         SetMovementStatus(EMovementStatus::EMS_Normal);
         break;
     case EStaminaStatus::ESS_ExhaustedRecovering:
@@ -212,6 +210,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AMainCharacter::MoveForward(float value)
 {
+    bMovingForward = false;
+
     if (Controller != nullptr && value != 0.f && !bAttacking && Alive())
     {
         //Find out which way is forward
@@ -220,11 +220,15 @@ void AMainCharacter::MoveForward(float value)
 
         const FVector direction = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X);
         AddMovementInput(direction, value);
+        
+        bMovingForward = true;
     }
 }
 
 void AMainCharacter::MoveRight(float value)
 {
+    bMovingRight = false;
+
     if (Controller != nullptr && value != 0.f && Alive())
     {
         //Find out which way is forward
@@ -233,6 +237,8 @@ void AMainCharacter::MoveRight(float value)
 
         const FVector direction = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y);
         AddMovementInput(direction, value);
+
+        bMovingRight = true;
     }
 }
 

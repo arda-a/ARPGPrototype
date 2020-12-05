@@ -174,6 +174,9 @@ public:
     // Called for side to side input
     void MoveRight(float value);
 
+    bool bMovingForward;
+    bool bMovingRight;
+
     /** Called via input to turn at a given rate
     * @param rate This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
     */
