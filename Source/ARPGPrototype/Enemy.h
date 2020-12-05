@@ -30,6 +30,8 @@ public:
 	// Sets default values for this character's properties
 	AEnemy();
 
+	bool bHasValidTarget;
+
 	FORCEINLINE void SetEnemyMovementStatus(EEnemyMovementStatus status) { EnemyMovementStatus = status; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
