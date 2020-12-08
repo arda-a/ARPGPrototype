@@ -420,3 +420,38 @@ void AMainCharacter::SetInterpToEnemy(bool interp) {
     bInterpToEnemy = interp;
 }
 
+void AMainCharacter::UpdateCombatTarget() {
+    TArray<AActor*> OverlappingActors;
+    GetOverlappingActors(OverlappingActors, EnemyFilter);
+
+    if (OverlappingActors.Num() == 0) {
+        if (MainPlayerController) {
+            MainPlayerController->RemoveEnemyHealthBar();
+        }
+        return;
+    }
+
+    AEnemy* closestEnemy = Cast<AEnemy>(OverlappingActors[0]);
+    if (closestEnemy) {
+        FVector location = GetActorLocation();
+        float minDistance = (closestEnemy->GetActorLocation() - location).Size();
+
+        for (auto actor : OverlappingActors) {
+            AEnemy* enemy = Cast<AEnemy>(actor);
+            if (enemy) {
+                float distance = (enemy->GetActorLocation() - location).Size();
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestEnemy = enemy;
+                }
+            }
+        }
+
+        if (MainPlayerController) {
+            MainPlayerController->DisplayEnemyHealthBar();
+        }
+
+        SetCombatTarget(closestEnemy);
+        SetHasCombatTarget(true);
+    }
+}

@@ -103,11 +103,10 @@ void AEnemy::AgroSphereOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AA
 			bHasValidTarget = false;
 			if (main->CombatTarget == this) {
 				main->SetCombatTarget(nullptr);
+				main->SetHasCombatTarget(false);
 			}
-			main->SetHasCombatTarget(false);
-			if (main->MainPlayerController) {
-				main->MainPlayerController->RemoveEnemyHealthBar();
-			}
+			main->UpdateCombatTarget();
+			
 
 			SetEnemyMovementStatus(EEnemyMovementStatus::EMS_Idle);
 			if (AIController) {
@@ -124,9 +123,7 @@ void AEnemy::CombatSphereOnOverlapBegin(UPrimitiveComponent* OverlappedComponent
 			bHasValidTarget = true;
 			main->SetCombatTarget(this);
 			main->SetHasCombatTarget(true);
-			if (main->MainPlayerController) {
-				main->MainPlayerController->DisplayEnemyHealthBar();
-			}
+			main->UpdateCombatTarget();
 
 			CombatTarget = main;
 			bOverlappingCombatSphere = true;
@@ -138,14 +135,26 @@ void AEnemy::CombatSphereOnOverlapBegin(UPrimitiveComponent* OverlappedComponent
 }
 
 void AEnemy::CombatSphereOnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) {
-	if (OtherActor) {
+	if (OtherActor && OtherComp) {
 		AMainCharacter* main = Cast<AMainCharacter>(OtherActor);
 		if (main) {
 			bOverlappingCombatSphere = false;
-			if (EnemyMovementStatus == EEnemyMovementStatus::EMS_Attacking) {
-				MoveToTarget(main);
-				CombatTarget = nullptr;
+			MoveToTarget(main);
+			CombatTarget = nullptr;
+
+			if (main->CombatTarget == this) {
+				main->SetCombatTarget(nullptr);
+				main->bHasCombatTarget = false;
+				main->UpdateCombatTarget();
 			}
+
+			if (main->MainPlayerController) {
+				USkeletalMeshComponent* mainMesh = Cast<USkeletalMeshComponent>(OtherComp);
+				if (mainMesh) {
+					main->MainPlayerController->RemoveEnemyHealthBar();
+				}
+			}
+
 			GetWorldTimerManager().ClearTimer(AttackTimer);
 		}
 	}
@@ -244,7 +253,7 @@ void AEnemy::PlaySwingSound() {
 float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) {
 	if (Health - DamageAmount < 0.f) {
 		Health -= DamageAmount;
-		Die();
+		Die(DamageCauser);
 	}
 	else
 		Health -= DamageAmount;
@@ -252,7 +261,7 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	return DamageAmount;
 }
 
-void AEnemy::Die() {
+void AEnemy::Die(AActor* causer) {
 	UAnimInstance* animInstance = GetMesh()->GetAnimInstance();
 	if (animInstance && CombatMontage) {
 		animInstance->Montage_Play(CombatMontage, 1.35f);
@@ -264,6 +273,11 @@ void AEnemy::Die() {
 	AgroSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	CombatSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	AMainCharacter* main = Cast<AMainCharacter>(causer);
+	if (main) {
+		main->UpdateCombatTarget();
+	}
 }
 
 void AEnemy::DeathEnd() {

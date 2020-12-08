@@ -144,7 +144,7 @@ public:
 							 class AController* EventInstigator,
 							 AActor* DamageCauser) override;
 
-	void Die();
+	void Die(AActor* causer);
 
 	UFUNCTION(BlueprintCallable)
 	void DeathEnd();
