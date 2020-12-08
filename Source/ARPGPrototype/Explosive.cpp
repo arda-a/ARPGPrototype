@@ -2,6 +2,8 @@
 
 #include "Explosive.h"
 #include "MainCharacter.h"
+#include "Enemy.h"
+#include "Kismet/GameplayStatics.h"
 
 AExplosive::AExplosive()
 {
@@ -13,10 +15,12 @@ void AExplosive::OnOverlapBegin(UPrimitiveComponent *OverlappedComponent, AActor
     if (OtherActor)
     {
         AMainCharacter *main = Cast<AMainCharacter>(OtherActor);
-        if (main)
+        AEnemy* enemy = Cast<AEnemy>(OtherActor);
+        if (main || enemy)
         {
             Super::OnOverlapBegin(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
-            main->DecrementHealth(Damage);
+            
+            UGameplayStatics::ApplyDamage(OtherActor, Damage, nullptr, this, DamageTypeClass);
             
             Destroy();
         }
