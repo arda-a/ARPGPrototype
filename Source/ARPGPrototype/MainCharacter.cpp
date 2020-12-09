@@ -464,3 +464,15 @@ void AMainCharacter::UpdateCombatTarget() {
         SetHasCombatTarget(true);
     }
 }
+
+void AMainCharacter::SwitchLevel(FName levelName) {
+    UWorld* world = GetWorld();
+    if (world) {
+        FString currentLevel = world->GetMapName();
+
+        FName currentLevelName(*currentLevel);
+        if (currentLevelName != levelName) {
+            UGameplayStatics::OpenLevel(world, levelName);
+        }
+    }
+}
