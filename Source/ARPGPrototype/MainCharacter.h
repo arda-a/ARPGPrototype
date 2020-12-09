@@ -148,7 +148,11 @@ public:
                              class AController* EventInstigator,
                              AActor* DamageCauser) override;
 
+    UFUNCTION(BlueprintCallable)
     void IncrementCoins(int32 amount);
+
+    UFUNCTION(BlueprintCallable)
+    void IncrementHealth(float amount);
 
     void Die();
 

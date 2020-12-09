@@ -333,6 +333,15 @@ void AMainCharacter::IncrementCoins(int32 amount)
     Coins += amount;
 }
 
+void AMainCharacter::IncrementHealth(float amount) {
+    if (Health + amount >= MaxHealth) {
+        Health = MaxHealth;
+    }
+    else {
+        Health += amount;
+    }
+}
+
 void AMainCharacter::Die()
 {
     if (MovementStatus == EMovementStatus::EMS_Dead)
