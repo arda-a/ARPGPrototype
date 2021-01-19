@@ -14,6 +14,7 @@
 #include "Sound/SoundCue.h"
 #include "Enemy.h"
 #include "MainPlayerController.h"
+#include "ARPGSaveGame.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -89,7 +90,7 @@ void AMainCharacter::BeginPlay()
 void AMainCharacter::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    
+
     if (MovementStatus == EMovementStatus::EMS_Dead)
         return;
 
@@ -146,7 +147,7 @@ void AMainCharacter::Tick(float DeltaTime)
     case EStaminaStatus::ESS_Exhausted:
         SetStaminaStatus(EStaminaStatus::ESS_ExhaustedRecovering);
         Stamina += deltaStamina;
-        
+
         SetMovementStatus(EMovementStatus::EMS_Normal);
         break;
     case EStaminaStatus::ESS_ExhaustedRecovering:
@@ -220,7 +221,7 @@ void AMainCharacter::MoveForward(float value)
 
         const FVector direction = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::X);
         AddMovementInput(direction, value);
-        
+
         bMovingForward = true;
     }
 }
@@ -475,4 +476,36 @@ void AMainCharacter::SwitchLevel(FName levelName) {
             UGameplayStatics::OpenLevel(world, levelName);
         }
     }
+}
+
+void AMainCharacter::SaveGame() {
+    UARPGSaveGame* saveGameInstance = Cast<UARPGSaveGame>(UGameplayStatics::CreateSaveGameObject(UARPGSaveGame::StaticClass()));
+
+    saveGameInstance->CharacterStats.Health = Health;
+    saveGameInstance->CharacterStats.MaxHealth = MaxHealth;
+    saveGameInstance->CharacterStats.Stamina = Stamina;
+    saveGameInstance->CharacterStats.MaxStamina = MaxStamina;
+    saveGameInstance->CharacterStats.Coins = Coins;
+    saveGameInstance->CharacterStats.Location = GetActorLocation();
+    saveGameInstance->CharacterStats.Rotation = GetActorRotation();
+
+    UGameplayStatics::SaveGameToSlot(saveGameInstance, saveGameInstance->PlayerName, saveGameInstance->UserIndex);
+}
+
+void AMainCharacter::LoadGame(bool setPosition) {
+    UARPGSaveGame* loadGameInstance = Cast<UARPGSaveGame>(UGameplayStatics::CreateSaveGameObject(UARPGSaveGame::StaticClass()));
+
+    loadGameInstance = Cast<UARPGSaveGame>(UGameplayStatics::LoadGameFromSlot(loadGameInstance->PlayerName, loadGameInstance->UserIndex));
+
+    Health = loadGameInstance->CharacterStats.Health;
+    MaxHealth = loadGameInstance->CharacterStats.MaxHealth;
+    Stamina = loadGameInstance->CharacterStats.Stamina;
+    MaxStamina = loadGameInstance->CharacterStats.MaxStamina;
+    Coins = loadGameInstance->CharacterStats.Coins;
+
+    if (setPosition) {
+        SetActorLocation(loadGameInstance->CharacterStats.Location);
+        SetActorRotation(loadGameInstance->CharacterStats.Rotation);
+    }
+
 }

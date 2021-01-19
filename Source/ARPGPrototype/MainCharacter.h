@@ -227,4 +227,10 @@ public:
     TSubclassOf<AEnemy> EnemyFilter;
 
     void SwitchLevel(FName levelName);
+
+    UFUNCTION(BlueprintCallable)
+    void SaveGame();
+
+    UFUNCTION(BlueprintCallable)
+    void LoadGame(bool setPosition);
 };
